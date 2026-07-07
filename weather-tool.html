@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>天气查询小工具</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --white: #ffffff;
+      --glass-bg: rgba(255, 255, 255, 0.22);
+      --glass-border: rgba(255, 255, 255, 0.35);
+      --text-main: #1f2937;
+      --text-light: #ffffff;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --error: #ef4444;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #60a5fa, #38bdf8, #818cf8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 14px;
+      color: var(--text-main);
+    }
+
+    .weather-card {
+      width: 100%;
+      max-width: 460px;
+      padding: 34px 28px;
+      border-radius: 26px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 24px 60px rgba(31, 41, 55, 0.22);
+      color: var(--text-light);
+    }
+
+    .weather-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .weather-header h1 {
+      font-size: 30px;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .weather-header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .search-area {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .search-area input {
+      flex: 1;
+      padding: 13px 14px;
+      border: none;
+      border-radius: 14px;
+      outline: none;
+      font-size: 15px;
+      background: rgba(255, 255, 255, 0.88);
+      color: var(--text-main);
+    }
+
+    .search-area input::placeholder {
+      color: #6b7280;
+    }
+
+    .search-area input:focus {
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.28);
+    }
+
+    .search-area button {
+      border: none;
+      border-radius: 14px;
+      padding: 0 22px;
+      background: var(--primary);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+
+    .search-area button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .result-box {
+      display: none;
+      padding: 26px 22px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.26);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      text-align: center;
+      animation: fadeIn 0.35s ease;
+    }
+
+    .result-box.show {
+      display: block;
+    }
+
+    .city-name {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .temperature {
+      font-size: 54px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .weather-info {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .info-item {
+      padding: 14px 10px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.22);
+    }
+
+    .info-item span {
+      display: block;
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 4px;
+    }
+
+    .info-item strong {
+      font-size: 18px;
+    }
+
+    .error-message {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      color: var(--white);
+      text-align: center;
+      font-weight: bold;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .city-tips {
+      margin-top: 22px;
+      text-align: center;
+      font-size: 13px;
+      opacity: 0.9;
+      line-height: 1.7;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .weather-card {
+        padding: 28px 20px;
+        border-radius: 22px;
+      }
+
+      .weather-header h1 {
+        font-size: 26px;
+      }
+
+      .search-area {
+        flex-direction: column;
+      }
+
+      .search-area button {
+        width: 100%;
+        padding: 13px 0;
+      }
+
+      .temperature {
+        font-size: 46px;
+      }
+
+      .weather-info {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="weather-card">
+    <div class="weather-header">
+      <h1>天气查询</h1>
+      <p>输入城市名，查看模拟天气数据</p>
+    </div>
+
+    <div class="search-area">
+      <input type="text" id="cityInput" placeholder="请输入城市名，如 北京" />
+      <button id="searchBtn">搜索</button>
+    </div>
+
+    <div class="result-box" id="resultBox">
+      <div class="city-name" id="cityName">北京</div>
+      <div class="temperature" id="temperature">24°C</div>
+
+      <div class="weather-info">
+        <div class="info-item">
+          <span>天气状况</span>
+          <strong id="weatherStatus">晴</strong>
+        </div>
+
+        <div class="info-item">
+          <span>湿度</span>
+          <strong id="humidity">65%</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-message" id="errorMessage">
+      未收录该城市
+    </div>
+
+    <div class="city-tips">
+      当前支持城市：北京 / 上海 / 广州 / 深圳
+    </div>
+  </div>
+
+  <script>
+    const weatherData = {
+      "北京": {
+        temperature: "24°C",
+        status: "晴",
+        humidity: "35%"
+      },
+      "上海": {
+        temperature: "27°C",
+        status: "多云",
+        humidity: "68%"
+      },
+      "广州": {
+        temperature: "30°C",
+        status: "小雨",
+        humidity: "78%"
+      },
+      "深圳": {
+        temperature: "29°C",
+        status: "晴转多云",
+        humidity: "72%"
+      }
+    };
+
+    const cityInput = document.getElementById("cityInput");
+    const searchBtn = document.getElementById("searchBtn");
+
+    const resultBox = document.getElementById("resultBox");
+    const errorMessage = document.getElementById("errorMessage");
+
+    const cityName = document.getElementById("cityName");
+    const temperature = document.getElementById("temperature");
+    const weatherStatus = document.getElementById("weatherStatus");
+    const humidity = document.getElementById("humidity");
+
+    function searchWeather() {
+      const city = cityInput.value.trim();
+
+      resultBox.classList.remove("show");
+      errorMessage.classList.remove("show");
+
+      if (city === "") {
+        errorMessage.textContent = "请输入城市名";
+        errorMessage.classList.add("show");
+        return;
+      }
+
+      if (weatherData[city]) {
+        cityName.textContent = city;
+        temperature.textContent = weatherData[city].temperature;
+        weatherStatus.textContent = weatherData[city].status;
+        humidity.textContent = weatherData[city].humidity;
+
+        resultBox.classList.add("show");
+      } else {
+        errorMessage.textContent = "未收录该城市";
+        errorMessage.classList.add("show");
+      }
+    }
+
+    searchBtn.addEventListener("click", searchWeather);
+
+    cityInput.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        searchWeather();
+      }
+    });
+  </script>
+</body>
+</html>

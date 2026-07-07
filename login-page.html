@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>登录 / 注册页面</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #4f46e5;
+      --primary-dark: #4338ca;
+      --secondary: #06b6d4;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --error: #ef4444;
+      --success: #10b981;
+      --white: #ffffff;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 14px;
+      color: var(--text-main);
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 430px;
+      background: var(--white);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+      overflow: hidden;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .auth-header h1 {
+      font-size: 28px;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .auth-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .tab-box {
+      display: flex;
+      background: #f3f4f6;
+      border-radius: 14px;
+      padding: 5px;
+      margin-bottom: 26px;
+      position: relative;
+    }
+
+    .tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 11px 0;
+      border-radius: 11px;
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--text-muted);
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      transition: color 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: var(--white);
+    }
+
+    .tab-indicator {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: calc(50% - 5px);
+      height: calc(100% - 10px);
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      transition: transform 0.35s ease;
+      z-index: 1;
+    }
+
+    .tab-box.register-mode .tab-indicator {
+      transform: translateX(100%);
+    }
+
+    .form-wrapper {
+      position: relative;
+      min-height: 270px;
+    }
+
+    .form {
+      display: none;
+      animation: fadeSlide 0.35s ease;
+    }
+
+    .form.active {
+      display: block;
+    }
+
+    @keyframes fadeSlide {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .form-group {
+      margin-bottom: 17px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      color: #374151;
+      margin-bottom: 7px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.13);
+    }
+
+    .error-message {
+      min-height: 18px;
+      margin-top: 5px;
+      font-size: 12px;
+      color: var(--error);
+    }
+
+    .submit-btn {
+      width: 100%;
+      border: none;
+      border-radius: 13px;
+      padding: 13px 0;
+      margin-top: 4px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(79, 70, 229, 0.25);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .success-message {
+      display: none;
+      margin-top: 18px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: #ecfdf5;
+      color: #047857;
+      font-size: 14px;
+      text-align: center;
+      border: 1px solid #bbf7d0;
+    }
+
+    .success-message.show {
+      display: block;
+      animation: fadeSlide 0.3s ease;
+    }
+
+    .tip {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 18px;
+    }
+
+    .tip span {
+      color: var(--primary);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media (max-width: 480px) {
+      .auth-card {
+        padding: 26px 20px;
+        border-radius: 20px;
+      }
+
+      .auth-header h1 {
+        font-size: 24px;
+      }
+
+      .form-wrapper {
+        min-height: 300px;
+      }
+
+      .form-group input {
+        padding: 12px 13px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1>欢迎使用</h1>
+      <p>请选择登录或注册账号</p>
+    </div>
+
+    <div class="tab-box" id="tabBox">
+      <div class="tab-indicator"></div>
+      <button class="tab-btn active" id="loginTab">登录</button>
+      <button class="tab-btn" id="registerTab">注册</button>
+    </div>
+
+    <div class="form-wrapper">
+      <!-- 登录表单 -->
+      <form class="form active" id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">邮箱</label>
+          <input type="email" id="loginEmail" placeholder="请输入邮箱" />
+          <div class="error-message" id="loginEmailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword">密码</label>
+          <input type="password" id="loginPassword" placeholder="请输入密码" />
+          <div class="error-message" id="loginPasswordError"></div>
+        </div>
+
+        <button type="submit" class="submit-btn">登录</button>
+
+        <div class="success-message" id="loginSuccess">
+          登录验证通过！
+        </div>
+
+        <p class="tip">
+          还没有账号？<span id="goRegister">立即注册</span>
+        </p>
+      </form>
+
+      <!-- 注册表单 -->
+      <form class="form" id="registerForm" novalidate>
+        <div class="form-group">
+          <label for="username">用户名</label>
+          <input type="text" id="username" placeholder="请输入用户名" />
+          <div class="error-message" id="usernameError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="registerEmail">邮箱</label>
+          <input type="email" id="registerEmail" placeholder="请输入邮箱" />
+          <div class="error-message" id="registerEmailError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="registerPassword">密码</label>
+          <input type="password" id="registerPassword" placeholder="至少 6 位密码" />
+          <div class="error-message" id="registerPasswordError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">确认密码</label>
+          <input type="password" id="confirmPassword" placeholder="请再次输入密码" />
+          <div class="error-message" id="confirmPasswordError"></div>
+        </div>
+
+        <button type="submit" class="submit-btn">注册</button>
+
+        <div class="success-message" id="registerSuccess">
+          注册验证通过！
+        </div>
+
+        <p class="tip">
+          已有账号？<span id="goLogin">返回登录</span>
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const tabBox = document.getElementById("tabBox");
+    const loginTab = document.getElementById("loginTab");
+    const registerTab = document.getElementById("registerTab");
+    const loginForm = document.getElementById("loginForm");
+    const registerForm = document.getElementById("registerForm");
+    const goRegister = document.getElementById("goRegister");
+    const goLogin = document.getElementById("goLogin");
+
+    function switchTab(type) {
+      clearAllMessages();
+
+      if (type === "login") {
+        tabBox.classList.remove("register-mode");
+        loginTab.classList.add("active");
+        registerTab.classList.remove("active");
+        loginForm.classList.add("active");
+        registerForm.classList.remove("active");
+      } else {
+        tabBox.classList.add("register-mode");
+        registerTab.classList.add("active");
+        loginTab.classList.remove("active");
+        registerForm.classList.add("active");
+        loginForm.classList.remove("active");
+      }
+    }
+
+    loginTab.addEventListener("click", function () {
+      switchTab("login");
+    });
+
+    registerTab.addEventListener("click", function () {
+      switchTab("register");
+    });
+
+    goRegister.addEventListener("click", function () {
+      switchTab("register");
+    });
+
+    goLogin.addEventListener("click", function () {
+      switchTab("login");
+    });
+
+    function isValidEmail(email) {
+      const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailReg.test(email);
+    }
+
+    function setError(id, message) {
+      document.getElementById(id).textContent = message;
+    }
+
+    function clearAllMessages() {
+      const errorMessages = document.querySelectorAll(".error-message");
+      const successMessages = document.querySelectorAll(".success-message");
+
+      errorMessages.forEach(function (item) {
+        item.textContent = "";
+      });
+
+      successMessages.forEach(function (item) {
+        item.classList.remove("show");
+      });
+    }
+
+    loginForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      clearAllMessages();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value.trim();
+
+      let valid = true;
+
+      if (email === "") {
+        setError("loginEmailError", "请输入邮箱");
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        setError("loginEmailError", "请输入正确的邮箱格式");
+        valid = false;
+      }
+
+      if (password === "") {
+        setError("loginPasswordError", "请输入密码");
+        valid = false;
+      } else if (password.length < 6) {
+        setError("loginPasswordError", "密码长度不能少于 6 位");
+        valid = false;
+      }
+
+      if (valid) {
+        document.getElementById("loginSuccess").classList.add("show");
+        loginForm.reset();
+      }
+    });
+
+    registerForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+      clearAllMessages();
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("registerEmail").value.trim();
+      const password = document.getElementById("registerPassword").value.trim();
+      const confirmPassword = document.getElementById("confirmPassword").value.trim();
+
+      let valid = true;
+
+      if (username === "") {
+        setError("usernameError", "请输入用户名");
+        valid = false;
+      } else if (username.length < 2) {
+        setError("usernameError", "用户名至少需要 2 个字符");
+        valid = false;
+      }
+
+      if (email === "") {
+        setError("registerEmailError", "请输入邮箱");
+        valid = false;
+      } else if (!isValidEmail(email)) {
+        setError("registerEmailError", "请输入正确的邮箱格式");
+        valid = false;
+      }
+
+      if (password === "") {
+        setError("registerPasswordError", "请输入密码");
+        valid = false;
+      } else if (password.length < 6) {
+        setError("registerPasswordError", "密码长度不能少于 6 位");
+        valid = false;
+      }
+
+      if (confirmPassword === "") {
+        setError("confirmPasswordError", "请再次输入密码");
+        valid = false;
+      } else if (password !== confirmPassword) {
+        setError("confirmPasswordError", "两次输入的密码不一致");
+        valid = false;
+      }
+
+      if (valid) {
+        document.getElementById("registerSuccess").classList.add("show");
+        registerForm.reset();
+      }
+    });
+  </script>
+</body>
+</html>
