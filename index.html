@@ -1,462 +1,438 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Zhu Meijiao | 个人作品集</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>个人作品集 · Camellia</title>
+    <!-- 使用 Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ---------- 全局重置 ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f4f7fc;
+            color: #1a2a3a;
+            scroll-behavior: smooth;
+            line-height: 1.6;
+        }
 
-  <style>
-    :root {
-      --primary-color: #1a2a3a;
-      --white: #ffffff;
-      --light-gray: #f4f6f8;
-      --text-color: #333333;
-      --muted-color: #666666;
-      --border-color: #e5e7eb;
-      --shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    }
+        /* ---------- 导航栏 ---------- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #1a2a3a;
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            flex-wrap: wrap;
+        }
+        .navbar .logo {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .navbar .logo span {
+            color: #5b9bd5;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            color: #e8edf3;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: color 0.25s;
+        }
+        .nav-links a:hover {
+            color: #5b9bd5;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+        /* ---------- Hero 区 ---------- */
+        .hero {
+            padding: 140px 40px 80px;
+            background: linear-gradient(135deg, #1a2a3a 0%, #2c4058 100%);
+            color: white;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .hero h1 span {
+            color: #7bb3e0;
+        }
+        .hero p {
+            font-size: 20px;
+            color: #cbdbe9;
+            margin-bottom: 28px;
+        }
+        .hero .btn {
+            display: inline-block;
+            background: #2a6df4;
+            color: #fff;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s;
+            font-size: 18px;
+        }
+        .hero .btn:hover {
+            background: #1b5ad0;
+            transform: scale(1.04);
+        }
 
-    html {
-      scroll-behavior: smooth;
-    }
+        /* ---------- 通用区 ---------- */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        .section-title {
+            font-size: 32px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a2a3a;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: #2a6df4;
+            margin: 10px auto 0;
+            border-radius: 4px;
+        }
 
-    body {
-      font-family: "Open Sans", "Microsoft YaHei", Arial, sans-serif;
-      color: var(--text-color);
-      background-color: var(--light-gray);
-      line-height: 1.7;
-    }
+        /* ---------- 关于我 ---------- */
+        .about-text {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 17px;
+            color: #2c3e50;
+            text-align: center;
+            background: white;
+            padding: 32px 40px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+            border: 1px solid #eef3f9;
+        }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+        /* ---------- 作品展示（卡片网格） ---------- */
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 10px;
+        }
+        .work-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 20px 28px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+            border: 1px solid #e6edf6;
+            transition: transform 0.25s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .work-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,20,40,0.08);
+            border-color: #cbddee;
+        }
+        .work-card .card-icon {
+            font-size: 36px;
+            color: #2a6df4;
+            margin-bottom: 12px;
+        }
+        .work-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a2a3a;
+        }
+        .work-card p {
+            font-size: 15px;
+            color: #3d556a;
+            flex: 1;
+            margin-bottom: 16px;
+        }
+        .work-card .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        .work-card .card-tags span {
+            background: #eef3fc;
+            color: #1f4e8a;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 30px;
+        }
+        .work-card .btn-link {
+            color: #2a6df4;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: gap 0.2s;
+            align-self: flex-start;
+        }
+        .work-card .btn-link:hover {
+            gap: 12px;
+            text-decoration: underline;
+        }
 
-    ul {
-      list-style: none;
-    }
+        /* ---------- 联系我 ---------- */
+        .contact-area {
+            background: #1a2a3a;
+            color: white;
+            padding: 50px 24px 40px;
+            text-align: center;
+        }
+        .contact-area h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .contact-area p {
+            color: #b8ccde;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .contact-area a {
+            color: #7bb3e0;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .contact-area a:hover {
+            text-decoration: underline;
+        }
+        .contact-area .social-icons {
+            margin-top: 18px;
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 28px;
+        }
+        .contact-area .social-icons a {
+            color: #b8ccde;
+            transition: color 0.2s;
+        }
+        .contact-area .social-icons a:hover {
+            color: white;
+        }
 
-    .container {
-      width: 90%;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+        /* ---------- 页脚 ---------- */
+        footer {
+            background: #0f1a26;
+            color: #6a7f94;
+            text-align: center;
+            padding: 18px 24px;
+            font-size: 14px;
+            border-top: 1px solid #1f3140;
+        }
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: var(--primary-color);
-      color: var(--white);
-      z-index: 1000;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    }
-
-    .navbar {
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 28px;
-    }
-
-    .nav-links a {
-      font-size: 0.95rem;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    .nav-links a:hover {
-      color: #c9d6e2;
-    }
-
-    .hero {
-      min-height: 100vh;
-      padding-top: 70px;
-      background: linear-gradient(135deg, var(--primary-color) 0%, #24384d 100%);
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      text-align: center;
-    }
-
-    .hero-content {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: 3.4rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      line-height: 1.2;
-    }
-
-    .hero p {
-      font-size: 1.25rem;
-      color: #dce5ee;
-      margin-bottom: 36px;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 14px 34px;
-      background-color: var(--white);
-      color: var(--primary-color);
-      font-weight: 700;
-      border-radius: 999px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 24px rgba(255, 255, 255, 0.18);
-    }
-
-    section {
-      padding: 90px 0;
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 2.2rem;
-      color: var(--primary-color);
-      margin-bottom: 18px;
-      font-weight: 800;
-    }
-
-    .section-subtitle {
-      text-align: center;
-      color: var(--muted-color);
-      margin-bottom: 50px;
-      font-size: 1rem;
-    }
-
-    .about {
-      background-color: var(--white);
-    }
-
-    .about-content {
-      max-width: 850px;
-      margin: 0 auto;
-      background-color: var(--light-gray);
-      padding: 36px;
-      border-radius: 18px;
-      border: 1px solid var(--border-color);
-    }
-
-    .about-content p {
-      font-size: 1.05rem;
-      color: var(--text-color);
-    }
-
-    .highlight {
-      color: var(--primary-color);
-      font-weight: 700;
-    }
-
-    .portfolio {
-      background-color: var(--light-gray);
-    }
-
-    .portfolio-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-
-    .project-card {
-      background-color: var(--white);
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .project-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
-    }
-
-    .project-image {
-      width: 100%;
-      height: 190px;
-      background: linear-gradient(135deg, #d9e2ec, #f0f4f8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-color);
-      font-weight: 700;
-      font-size: 1.1rem;
-    }
-
-    .project-content {
-      padding: 24px;
-    }
-
-    .project-content h3 {
-      font-size: 1.25rem;
-      color: var(--primary-color);
-      margin-bottom: 10px;
-    }
-
-    .project-content p {
-      color: var(--muted-color);
-      font-size: 0.95rem;
-      margin-bottom: 18px;
-    }
-
-    .project-link {
-      color: var(--primary-color);
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .project-link:hover {
-      text-decoration: underline;
-    }
-
-    .contact {
-      background-color: var(--white);
-    }
-
-    .contact-box {
-      max-width: 700px;
-      margin: 0 auto;
-      background-color: var(--primary-color);
-      color: var(--white);
-      padding: 42px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-
-    .contact-box p {
-      margin-bottom: 14px;
-      font-size: 1.05rem;
-    }
-
-    .contact-box a {
-      color: #dce5ee;
-      font-weight: 700;
-      transition: color 0.3s ease;
-    }
-
-    .contact-box a:hover {
-      color: var(--white);
-      text-decoration: underline;
-    }
-
-    footer {
-      background-color: var(--primary-color);
-      color: var(--white);
-      text-align: center;
-      padding: 24px 0;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 900px) {
-      .portfolio-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .hero h1 {
-        font-size: 2.7rem;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .navbar {
-        height: auto;
-        padding: 16px 0;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .nav-links {
-        gap: 16px;
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-
-      .nav-links a {
-        font-size: 0.9rem;
-      }
-
-      .hero {
-        padding-top: 120px;
-      }
-
-      .hero h1 {
-        font-size: 2.2rem;
-      }
-
-      .hero p {
-        font-size: 1rem;
-      }
-
-      section {
-        padding: 70px 0;
-      }
-
-      .section-title {
-        font-size: 1.8rem;
-      }
-
-      .about-content {
-        padding: 26px;
-      }
-
-      .portfolio-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .contact-box {
-        padding: 32px 22px;
-      }
-    }
-  </style>
+        /* ---------- 响应式 ---------- */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 14px 20px;
+                flex-direction: column;
+                gap: 8px;
+            }
+            .nav-links {
+                gap: 18px;
+                justify-content: center;
+            }
+            .hero {
+                padding: 130px 20px 60px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .hero p {
+                font-size: 17px;
+            }
+            .section {
+                padding: 40px 16px;
+            }
+            .about-text {
+                padding: 24px 20px;
+            }
+            .work-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 26px;
+            }
+            .hero .btn {
+                font-size: 16px;
+                padding: 12px 28px;
+            }
+            .section-title {
+                font-size: 26px;
+            }
+        }
+    </style>
 </head>
-
 <body>
 
-  <header>
-    <div class="container navbar">
-      <div class="logo">Zhu Meijiao</div>
+<!-- ====== 导航栏 ====== -->
+<nav class="navbar">
+    <div class="logo">Camellia<span>.</span></div>
+    <ul class="nav-links">
+        <li><a href="#home">首页</a></li>
+        <li><a href="#about">关于我</a></li>
+        <li><a href="#work">作品展示</a></li>
+        <li><a href="#contact">联系我</a></li>
+    </ul>
+</nav>
 
-      <nav>
-        <ul class="nav-links">
-          <li><a href="#home">首页</a></li>
-          <li><a href="#about">关于我</a></li>
-          <li><a href="#portfolio">作品展示</a></li>
-          <li><a href="#contact">联系我</a></li>
-        </ul>
-      </nav>
+<!-- ====== Hero ====== -->
+<section class="hero" id="home">
+    <h1>你好，我是 <span>Camellia</span></h1>
+    <p>计算机专业研究生 · 前端开发 · 微信小程序开发者</p>
+    <a href="#work" class="btn">查看我的作品</a>
+</section>
+
+<!-- ====== 关于我 ====== -->
+<section class="section" id="about">
+    <h2 class="section-title">关于我</h2>
+    <div class="about-text">
+        <p>计算机专业在读研究生，拥有<strong>微信小程序独立开发经验</strong>（已进入备案阶段），以及多个响应式网页项目的实战经历。</p>
+        <br />
+        <p><strong>技术能力：</strong> HTML5 / CSS3 / JavaScript (ES6+) · 微信小程序开发 · 响应式设计 · Git · GitHub Pages · AI辅助开发 (ChatGPT / Codex)</p>
+        <br />
+        <p>目前暑假全天候在线，响应迅速。期待用专业的能力和负责的态度，为你完成项目需求。</p>
     </div>
-  </header>
+</section>
 
-  <section class="hero" id="home">
-    <div class="container hero-content">
-      <h1>你好，我是 Zhu Meijiao</h1>
-      <p>计算机专业研究生 · 前端开发 · AI 工具辅助高效交付</p>
-      <button class="btn" id="viewWorksBtn">查看我的作品</button>
-    </div>
-  </section>
+<!-- ====== 作品展示 ====== -->
+<section class="section" id="work">
+    <h2 class="section-title">作品展示</h2>
+    <div class="work-grid">
 
-  <section class="about" id="about">
-    <div class="container">
-      <h2 class="section-title">关于我</h2>
-      <p class="section-subtitle">用清晰的页面结构和高效的开发流程完成作品交付</p>
+        <!-- 作品1：个人作品集网站 -->
+        <div class="work-card">
+            <div class="card-icon"><i class="fas fa-code"></i></div>
+            <h3>个人作品集网站</h3>
+            <p>响应式个人作品集网站，包含导航、关于我、作品展示、联系我四个模块，适配PC和移动端。</p>
+            <div class="card-tags">
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>JavaScript</span>
+            </div>
+            <a href="https://Camellia-0627.github.io" target="_blank" class="btn-link">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
 
-      <div class="about-content">
-        <p>
-          我是一名计算机相关方向的研究生，关注前端页面设计、静态网页开发和项目展示型网站构建。
-          我擅长使用 <span class="highlight">HTML、CSS 和 JavaScript</span> 完成简洁、美观、响应式的静态网页，
-          能够根据具体需求快速搭建个人主页、课程展示页、作品集页面等。
-          同时，我善于借助 <span class="highlight">AI 工具</span> 提升开发效率，包括页面结构规划、代码生成、样式优化和内容整理，
-          从而在较短时间内完成具有可展示价值的网页作品。
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="portfolio" id="portfolio">
-    <div class="container">
-      <h2 class="section-title">作品展示</h2>
-      <p class="section-subtitle">以下为我的前端静态网页作品</p>
-
-      <div class="portfolio-grid">
-
-        <div class="project-card">
-          <div class="project-image">Todo App</div>
-          <div class="project-content">
+        <!-- 作品2：待办事项应用 -->
+        <div class="work-card">
+            <div class="card-icon"><i class="fas fa-list-check"></i></div>
             <h3>待办事项应用</h3>
-            <p>
-              支持添加、完成、删除待办项，数据自动保存在浏览器中，刷新不丢失。
-            </p>
-            <a href="todo-app.html" class="project-link">查看详情 →</a>
-          </div>
+            <p>支持添加、完成/取消完成、删除待办项，使用 localStorage 持久化存储数据，刷新不丢失。</p>
+            <div class="card-tags">
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>localStorage</span>
+            </div>
+            <a href="https://Camellia-0627.github.io/todo-app.html" target="_blank" class="btn-link">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
 
-        <div class="project-card">
-          <div class="project-image">Login Page</div>
-          <div class="project-content">
-            <h3>登录/注册页面</h3>
-            <p>
-              双 Tab 切换登录与注册，包含邮箱、密码、确认密码等表单验证。
-            </p>
-            <a href="login-page.html" class="project-link">查看详情 →</a>
-          </div>
+        <!-- 作品3：微信小程序开发（新增） -->
+        <div class="work-card">
+            <div class="card-icon"><i class="fab fa-weixin"></i></div>
+            <h3>微信小程序开发</h3>
+            <p>独立开发一款微信小程序，涵盖页面设计、交互逻辑、数据绑定等完整流程，目前已完成核心功能开发，正在等待备案审核上线。</p>
+            <div class="card-tags">
+                <span>微信小程序</span>
+                <span>JavaScript</span>
+                <span>云开发</span>
+            </div>
+            <a href="#contact" class="btn-link">
+                联系我获取体验版 <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
 
-        <div class="project-card">
-          <div class="project-image">Weather Tool</div>
-          <div class="project-content">
+        <!-- 作品4：登录/注册页面 -->
+        <div class="work-card">
+            <div class="card-icon"><i class="fas fa-right-to-bracket"></i></div>
+            <h3>登录 / 注册页面</h3>
+            <p>双Tab切换登录与注册，包含邮箱、密码、确认密码等前端表单验证，渐变玻璃态设计。</p>
+            <div class="card-tags">
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>JavaScript</span>
+            </div>
+            <a href="https://Camellia-0627.github.io/login-page.html" target="_blank" class="btn-link">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <!-- 作品5：天气查询工具 -->
+        <div class="work-card">
+            <div class="card-icon"><i class="fas fa-cloud-sun"></i></div>
             <h3>天气查询工具</h3>
-            <p>
-              输入城市名查询模拟天气数据，支持北京、上海、广州、深圳。
-            </p>
-            <a href="weather-tool.html" class="project-link">查看详情 →</a>
-          </div>
+            <p>输入城市名查询模拟天气数据，支持北京、上海、广州、深圳，显示温度、天气状况、湿度。</p>
+            <div class="card-tags">
+                <span>HTML5</span>
+                <span>CSS3</span>
+                <span>JavaScript</span>
+            </div>
+            <a href="https://Camellia-0627.github.io/weather-tool.html" target="_blank" class="btn-link">
+                查看详情 <i class="fas fa-arrow-right"></i>
+            </a>
         </div>
 
-      </div>
     </div>
-  </section>
+</section>
 
-  <section class="contact" id="contact">
-    <div class="container">
-      <h2 class="section-title">联系我</h2>
-      <p class="section-subtitle">欢迎通过以下方式与我联系</p>
-
-      <div class="contact-box">
-        <p>邮箱：<a href="mailto:2496639466@qq.com">2496639466@qq.com</a></p>
-        <p>GitHub：<a href="https://github.com/Camellia-0627" target="_blank">GitHub：https://github.com/Camellia-0627</a></p>
-      </div>
+<!-- ====== 联系我 ====== -->
+<section class="contact-area" id="contact">
+    <h2>联系我</h2>
+    <p><i class="fas fa-envelope"></i> 邮箱：202512854052@jmu.edu.cn</p>
+    <p><i class="fab fa-github"></i> GitHub：<a href="https://github.com/Camellia-0627" target="_blank">github.com/Camellia-0627</a></p>
+    <p><i class="fab fa-weixin"></i> 如需小程序体验版预览，欢迎邮件联系或添加微信（备注“作品集”）</p>
+    <div class="social-icons">
+        <a href="https://github.com/Camellia-0627" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="mailto:2496639466@qq.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
     </div>
-  </section>
+</section>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2026 Zhu Meijiao. All Rights Reserved.</p>
-    </div>
-  </footer>
-
-  <script>
-    const viewWorksBtn = document.getElementById("viewWorksBtn");
-
-    viewWorksBtn.addEventListener("click", function () {
-      const portfolioSection = document.getElementById("portfolio");
-
-      portfolioSection.scrollIntoView({
-        behavior: "smooth"
-      });
-    });
-  </script>
+<!-- ====== 页脚 ====== -->
+<footer>
+    &copy; 2026 Camellia. Built with <i class="fas fa-heart" style="color: #e74c3c;"></i>
+</footer>
 
 </body>
 </html>
